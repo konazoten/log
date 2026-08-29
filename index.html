@@ -17,13 +17,15 @@
     display: flex;
     justify-content: center;
     color: #dbdee1;
+    /* スマホで引っ張ったときの余白スクロールを防ぐ */
+    overscroll-behavior-y: none; 
   }
   
   /* Discordアプリの枠組み */
   .discord-app {
     width: 100%;
     max-width: 900px;
-    height: 700px;
+    height: 700px; /* PCでの高さ */
     display: flex;
     background-color: #313338;
     border-radius: 8px;
@@ -85,7 +87,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0; /* flexbox内の縮小バグを防ぐ */
+    min-width: 0;
+    min-height: 0; /* ★超重要：これで中身がはみ出してもスクロールできるようになります */
   }
 
   .chat-header {
@@ -105,7 +108,8 @@
     display: none;
     flex: 1;
     padding: 16px 0;
-    overflow-y: auto;
+    overflow-y: auto; /* ★縦スクロールの設定 */
+    -webkit-overflow-scrolling: touch; /* スマホで滑らかにスクロールさせる */
   }
   .chat-area.active {
     display: block;
@@ -117,7 +121,6 @@
     align-items: center;
     margin: 24px 16px 8px 16px;
   }
-  
   .date-divider::before,
   .date-divider::after {
     content: "";
@@ -125,7 +128,6 @@
     height: 1px;
     background-color: #3f4147;
   }
-
   .date-text {
     padding: 0 10px;
     font-size: 12px;
@@ -158,7 +160,6 @@
     text-shadow: 1px 0 2px rgba(255,0,0,0.8);
     animation: glitch-anim 0.5s infinite;
   }
-
   @keyframes glitch-anim {
     0% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -171,11 +172,9 @@
     padding: 4px 16px;
     margin-top: 12px;
   }
-  
   .message:hover {
     background-color: #2e3035;
   }
-  
   .message.consecutive {
     margin-top: 0;
     padding-top: 2px;
@@ -211,35 +210,30 @@
     flex: 1;
     min-width: 0;
   }
-
   .message-header {
     display: flex;
     align-items: baseline;
     margin-bottom: 4px;
   }
-
   .username {
     font-size: 16px;
     font-weight: 500;
     color: #f2f3f5;
     margin-right: 8px;
   }
-  
   .name-shoko { color: #faa61a; }
   .name-shishito { color: #5865F2; }
   .name-kobushi { color: #57F287; }
   .name-akiakane { color: #EB459E; }
-
   .timestamp {
     font-size: 12px;
     color: #949ba4;
   }
-
   .message-text {
     font-size: 15px;
     line-height: 1.4;
     color: #dbdee1;
-    word-break: break-word; /* 長いURL等でレイアウトが崩れないようにする */
+    word-break: break-word;
   }
 
   /* iframe（伝助）の枠設定 */
@@ -279,36 +273,58 @@
     line-height: 1.6;
   }
 
-  /* ★★★ スマートフォン用のレスポンシブ設定 ★★★ */
+  /* ★★★ スマートフォン用のレスポンシブ設定（ここを大幅強化！） ★★★ */
   @media (max-width: 768px) {
     body {
-      padding: 0; /* スマホでは画面いっぱいに広げる */
+      padding: 0;
+      /* スマホのブラウザのUIに隠れないように高さを計算する */
+      height: 100vh;
+      height: 100dvh;
     }
+    
     .discord-app {
-      flex-direction: column; /* 縦並びに変更 */
-      height: 100dvh; /* スマホの画面高さいっぱいに */
+      flex-direction: column;
+      height: 100%;
       border-radius: 0;
     }
+    
+    /* タブ（チャンネルメニュー）を上部に固定し、横並びにする */
     .sidebar {
       width: 100%;
       height: auto;
-      flex-direction: row; /* チャンネルボタンを横並びに */
-      overflow-x: auto; /* 横スクロール可能に */
+      flex-direction: row;     /* 横並び */
+      flex-wrap: nowrap;       /* 折り返し禁止 */
+      overflow-x: auto;        /* 横スクロール有効 */
+      overflow-y: hidden;
       padding: 8px;
       border-bottom: 1px solid #1f2023;
+      /* スクロールバーを非表示にしてスッキリさせる */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sidebar::-webkit-scrollbar {
+      display: none;
     }
     .sidebar-title {
-      display: none; /* スマホではスペース確保のため非表示 */
+      display: none; /* スマホではタイトルを隠してスペースを広く */
     }
+    
     .channel-btn {
-      white-space: nowrap; /* テキストの折り返しを禁止 */
+      flex: 0 0 auto; /* ★ボタンが潰れないようにサイズを固定 */
       margin-bottom: 0;
       margin-right: 8px;
-      padding: 8px 12px;
-      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 20px; /* タブっぽく丸みを少しつける */
+      background-color: #2b2d31;
     }
+    .channel-btn.active {
+      background-color: #404249;
+    }
+
+    /* チャットエリアのスマホ向け調整 */
     .message {
-      padding: 4px 12px; /* 余白を少し詰める */
+      padding: 4px 12px;
     }
     .avatar {
       width: 36px;
@@ -319,11 +335,8 @@
     .message-text {
       font-size: 14px;
     }
-    .username {
-      font-size: 15px;
-    }
     .embedded-site {
-      height: 300px; /* スマホでは伝助の枠を少し小さく */
+      height: 300px;
     }
   }
 </style>
