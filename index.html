@@ -272,7 +272,7 @@
     line-height: 1.6;
   }
 
-  /* ★★★ スマートフォン用のレスポンシブ設定（左メニュー維持） ★★★ */
+  /* ★★★ スマートフォン用のレスポンシブ設定 ★★★ */
   @media (max-width: 768px) {
     body {
       padding: 0;
@@ -281,53 +281,69 @@
     }
     
     .discord-app {
-      flex-direction: row; /* 横並び（左メニュー・右チャット）を維持 */
+      flex-direction: column; /* 上下分割に戻す */
       height: 100%;
       border-radius: 0;
     }
     
-    /* スマホでは左メニューの幅を狭くする */
+    /* タブ（チャンネルメニュー）を上部に固定し、横並びにする */
     .sidebar {
-      width: 120px; /* PCの240pxから半分にスリム化 */
-      height: 100%;
-      flex-direction: column;
-      padding: 8px 4px;
-      border-right: 1px solid #1f2023;
+      width: 100%;
+      height: auto;
+      flex-direction: row;     /* 横並び */
+      flex-wrap: nowrap;       /* 折り返し禁止 */
+      overflow-x: auto;        /* 横スクロール有効 */
+      overflow-y: hidden;
+      padding: 8px;
+      border-bottom: 1px solid #1f2023;
+      border-right: none;
+      /* スクロールバーを非表示にしてスッキリさせる */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sidebar::-webkit-scrollbar {
+      display: none;
     }
     .sidebar-title {
       display: none; /* スマホではスペース確保のため非表示 */
     }
     
     .channel-btn {
-      padding: 12px 8px;
-      font-size: 13px; /* 文字を少し小さく */
-      margin-bottom: 2px;
-      border-radius: 4px;
-      white-space: nowrap;
+      flex: 0 0 auto; /* ボタンが潰れないようにサイズを固定 */
+      margin-bottom: 0;
+      margin-right: 8px;
+      padding: 8px 16px;
+      border-radius: 20px; /* タブっぽく丸みを少しつける */
+      background-color: #2b2d31;
+      font-size: 14px;
+    }
+    .channel-btn.active {
+      background-color: #404249;
     }
 
-    /* チャットエリアのスマホ向け調整（余白やアイコンサイズを詰める） */
+    /* チャットエリアのスマホ向け調整 */
     .chat-header {
       font-size: 14px;
       padding: 0 10px;
     }
     .message {
-      padding: 4px 10px;
+      padding: 4px 12px;
     }
     .avatar {
-      width: 32px;
-      height: 32px;
-      font-size: 16px;
-      margin-right: 10px;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      margin-right: 12px;
     }
     .message-text {
       font-size: 14px;
     }
     .username {
-      font-size: 14px;
+      font-size: 15px;
     }
     .timestamp {
-      font-size: 11px;
+      font-size: 12px;
     }
     .embedded-site {
       height: 300px;
