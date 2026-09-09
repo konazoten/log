@@ -165,6 +165,19 @@
     100% { opacity: 1; }
   }
 
+  /* ★メンション（@タグ）のスタイル */
+  .mention {
+    background-color: rgba(88, 101, 242, 0.3); /* Discord風の青背景 */
+    color: #c9cdfb;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .mention:hover {
+    background-color: rgba(88, 101, 242, 0.5);
+    cursor: pointer;
+  }
+
   /* メッセージのスタイル */
   .message {
     display: flex;
@@ -224,6 +237,7 @@
   .name-shishito { color: #5865F2; }
   .name-kobushi { color: #57F287; }
   .name-akiakane { color: #EB459E; }
+  .name-higure { color: #95a5a6; }
   .timestamp {
     font-size: 12px;
     color: #949ba4;
@@ -233,16 +247,6 @@
     line-height: 1.4;
     color: #dbdee1;
     word-break: break-word;
-  }
-
-  /* iframe（伝助）の枠設定 */
-  .embedded-site {
-    width: 100%;
-    height: 400px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    background-color: #fff;
   }
 
   /* アクセス拒否画面 */
@@ -279,25 +283,21 @@
       height: 100vh;
       height: 100dvh;
     }
-    
     .discord-app {
-      flex-direction: column; /* 上下分割に戻す */
+      flex-direction: column; 
       height: 100%;
       border-radius: 0;
     }
-    
-    /* タブ（チャンネルメニュー）を上部に固定し、横並びにする */
     .sidebar {
       width: 100%;
       height: auto;
-      flex-direction: row;     /* 横並び */
-      flex-wrap: nowrap;       /* 折り返し禁止 */
-      overflow-x: auto;        /* 横スクロール有効 */
+      flex-direction: row;     
+      flex-wrap: nowrap;       
+      overflow-x: auto;        
       overflow-y: hidden;
       padding: 8px;
       border-bottom: 1px solid #1f2023;
       border-right: none;
-      /* スクロールバーを非表示にしてスッキリさせる */
       -ms-overflow-style: none;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
@@ -306,23 +306,20 @@
       display: none;
     }
     .sidebar-title {
-      display: none; /* スマホではスペース確保のため非表示 */
+      display: none; 
     }
-    
     .channel-btn {
-      flex: 0 0 auto; /* ボタンが潰れないようにサイズを固定 */
+      flex: 0 0 auto; 
       margin-bottom: 0;
       margin-right: 8px;
       padding: 8px 16px;
-      border-radius: 20px; /* タブっぽく丸みを少しつける */
+      border-radius: 20px; 
       background-color: #2b2d31;
       font-size: 14px;
     }
     .channel-btn.active {
       background-color: #404249;
     }
-
-    /* チャットエリアのスマホ向け調整 */
     .chat-header {
       font-size: 14px;
       padding: 0 10px;
@@ -345,15 +342,13 @@
     .timestamp {
       font-size: 12px;
     }
-    .embedded-site {
-      height: 300px;
-    }
   }
 </style>
 </head>
 <body>
 
 <div class="discord-app">
+  <!-- サイドバー -->
   <div class="sidebar">
     <div class="sidebar-title">テキストチャンネル</div>
     <button class="channel-btn" onclick="switchChannel('zatsudan', '雑談', this)">
@@ -362,8 +357,8 @@
     <button class="channel-btn active" onclick="switchChannel('kaigi', '会議', this)">
       <span class="hashtag">#</span>会議
     </button>
-    <button class="channel-btn" onclick="switchChannel('nittei', '日程調整', this)">
-      <span class="hashtag">#</span>日程調整
+    <button class="channel-btn" onclick="switchChannel('nittei', '🔒日程調整', this)">
+      <span class="hashtag" style="font-size: 14px; margin-right: 4px;">🔒</span>日程調整
     </button>
     <button class="channel-btn" onclick="switchChannel('nazo', '🔒謎実装', this)">
       <span class="hashtag" style="font-size: 14px; margin-right: 4px;">🔒</span>謎実装
@@ -373,6 +368,7 @@
     </button>
   </div>
 
+  <!-- チャットエリア -->
   <div class="chat-container">
     
     <div class="chat-header">
@@ -380,7 +376,9 @@
       <span id="header-title">会議</span>
     </div>
 
+    <!-- ＝＝＝ ルーム：雑談 ＝＝＝ -->
     <div id="zatsudan" class="chat-area">
+      <!-- 6/10 -->
       <div class="date-divider"><span class="date-text">2026年6月10日</span></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">12:00</span></div><div class="message-text">「小謎展覧会」やりましょう！</div></div></div>
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">12:05</span></div><div class="message-text">小謎展覧会...❓❓❓</div></div></div>
@@ -389,15 +387,21 @@
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">12:20</span></div><div class="message-text">謎解き激強のししとうもいるから成功間違いなし！</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">12:25</span></div><div class="message-text">よろしく</div></div></div>
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">12:30</span></div><div class="message-text">頑張りましょう！！！！！</div></div></div>
-      <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">12:35</span></div><div class="message-text">伝助の入力お願いします！</div></div></div>
+      <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">12:35</span></div><div class="message-text">日調ちゃんとやってね！</div></div></div>
+      <!-- ★追加：ひぐれへのメンション -->
+      <div class="message consecutive"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username">しょこ</span></div><div class="message-text"><span class="mention">@ひぐれ</span> 日調解答お願い！</div></div></div>
       
+      <!-- 8/25 -->
       <div class="date-divider"><span class="date-text">2026年8月25日</span></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">15:00</span></div><div class="message-text">ししとうごめん、鏡を置く場所が確保できなさそうだからホワイトボード参照の物品謎できなさそう</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">15:05</span></div><div class="message-text">そういえばそんなのもあったな</div></div></div>
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">15:10</span></div><div class="message-text">たぶんなんですけど...法則謎のうち右下の謎を左下に移動すれば鏡を見なくても単語になるんじゃないですかね...👀</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">15:12</span></div><div class="message-text">たしかにそうだな</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">15:15</span></div><div class="message-text">よし、それでいこう！</div></div></div>
+      <!-- ★追加：あきあかねのツッコミ -->
+      <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">15:18</span></div><div class="message-text">むずいこと言ってないかー？</div></div></div>
       
+      <!-- 9/1 -->
       <div class="date-divider"><span class="date-text">2026年9月1日</span></div>
       <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">14:00</span></div><div class="message-text">やばい、小謎を印刷してたんだけどミスで拡大されて印刷されちゃった</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">14:05</span></div><div class="message-text">何を間違えたら拡大されるんだ...</div></div></div>
@@ -406,8 +410,18 @@
       <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">14:20</span></div><div class="message-text">まじか！一応もとの謎も印刷しとくわ</div></div></div>
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">14:25</span></div><div class="message-text">拡大謎って名前どうですか！✨</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">14:30</span></div><div class="message-text">それにしよう！</div></div></div>
+
+      <!-- ★追加：9/3 法則謎のミス -->
+      <div class="date-divider"><span class="date-text">2026年9月3日</span></div>
+      <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">16:00</span></div><div class="message-text">右向きと左向きの三角がある法則謎さぁーミスってない？</div></div></div>
+      <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">16:05</span></div><div class="message-text">どこがミスってるの？</div></div></div>
+      <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">16:10</span></div><div class="message-text">もとは三角の向き全部逆じゃなかった？</div></div></div>
+      <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">16:15</span></div><div class="message-text">作ったの俺だ、間違えた！</div></div></div>
+      <div class="message consecutive"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username">あきあかね</span></div><div class="message-text">でもどっちでも解けるからよくね～</div></div></div>
+      <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">16:20</span></div><div class="message-text">どっちでも解けるのすごい！！😲</div></div></div>
     </div>
     
+    <!-- ＝＝＝ ルーム：会議 ＝＝＝ -->
     <div id="kaigi" class="chat-area active">
       <div class="date-divider"><span class="date-text">2026年6月15日</span></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">18:00</span></div><div class="message-text">今日の会議はじめようか</div></div></div>
@@ -429,7 +443,9 @@
       <div class="message consecutive"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username">しょこ</span></div><div class="message-text">今日の会議はこれで終わり！お疲れ様でしたー</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">18:22</span></div><div class="message-text">おつかれ～</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">18:22</span></div><div class="message-text">おつかれさまです！！！🫡</div></div></div>
+      <div class="message"><div class="avatar av-higure">👤</div><div class="message-content"><div class="message-header"><span class="username name-higure">ひぐれ</span><span class="timestamp">18:23</span></div><div class="message-text">おつかれ</div></div></div>
       <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">18:23</span></div><div class="message-text">ばいばーい👋</div></div></div>
+      <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">18:24</span></div><div class="message-text">いたんだ</div></div></div>
 
       <div class="date-divider"><span class="date-text">2026年7月1日</span></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">19:00</span></div><div class="message-text">だいぶ日が空いちゃったけど今日も会議しよう</div></div></div>
@@ -473,23 +489,19 @@
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">20:18</span></div><div class="message-text">なんかよさそう！採用！</div></div></div>
     </div>
 
+    <!-- ＝＝＝ ルーム：日程調整（アクセス拒否） ＝＝＝ -->
     <div id="nittei" class="chat-area">
-      <div class="date-divider"><span class="date-text">2026年6月10日</span></div>
-      <div class="message">
-        <div class="avatar av-shoko">👑</div>
-        <div class="message-content">
-          <div class="message-header">
-            <span class="username name-shoko">しょこ</span><span class="timestamp">13:00</span>
-          </div>
-          <div class="message-text">
-            今後の会議や作業の日程調整用に、伝助を作ったよ！<br>
-            みんな入力よろしくー！
-            <iframe src="https://densuke.biz/" class="embedded-site" title="伝助サイト"></iframe>
-          </div>
+      <div class="restricted-container">
+        <div class="lock-icon-large">🔒</div>
+        <div class="restricted-title">メッセージ履歴を閲覧できません</div>
+        <div class="restricted-desc">
+          このチャンネル（日程調整）を閲覧するためのロールまたは権限がありません。<br>
+          サーバー管理者に問い合わせるか、必要な条件を満たしてください。
         </div>
       </div>
     </div>
 
+    <!-- ＝＝＝ ルーム：謎実装（アクセス拒否） ＝＝＝ -->
     <div id="nazo" class="chat-area">
       <div class="restricted-container">
         <div class="lock-icon-large">🔒</div>
@@ -501,6 +513,7 @@
       </div>
     </div>
 
+    <!-- ＝＝＝ ルーム：前日準備 ＝＝＝ -->
     <div id="zenjitsu" class="chat-area">
       <div class="date-divider"><span class="date-text">2026年9月11日</span></div>
       
