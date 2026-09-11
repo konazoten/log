@@ -42,6 +42,26 @@
     flex-shrink: 0;
   }
   
+  /* ★追加：サイト説明再表示ボタン */
+  .info-btn {
+    background-color: #232428;
+    color: #dbdee1;
+    border: 1px solid #1f2023;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+  .info-btn:hover {
+    background-color: #35373c;
+    color: #fff;
+  }
+
   .sidebar-title {
     font-size: 12px;
     font-weight: bold;
@@ -167,7 +187,7 @@
 
   /* ★メンション（@タグ）のスタイル */
   .mention {
-    background-color: rgba(88, 101, 242, 0.3); /* Discord風の青背景 */
+    background-color: rgba(88, 101, 242, 0.3);
     color: #c9cdfb;
     padding: 0 4px;
     border-radius: 3px;
@@ -276,7 +296,76 @@
     line-height: 1.6;
   }
 
-  /* ★★★ スマートフォン用のレスポンシブ設定 ★★★ */
+  /* ★★★ 初期説明ポップアップ（モーダル）のスタイル ★★★ */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-content {
+    background-color: #313338;
+    border: 1px solid #1f2023;
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 550px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    text-align: center;
+  }
+  .modal-title {
+    color: #f2f3f5;
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .modal-text {
+    color: #dbdee1;
+    font-size: 17px;
+    line-height: 1.6;
+    text-align: left;
+    margin-bottom: 30px;
+  }
+  .modal-btn {
+    background-color: #5865F2;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+  .modal-btn:hover {
+    background-color: #4752C4;
+  }
+
+  /* ★追加：強調キーワードのスタイル */
+  .highlight-keyword {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border-bottom: 2px solid #5865F2;
+  }
+
+  /* スマートフォン用のレスポンシブ設定 */
   @media (max-width: 768px) {
     body {
       padding: 0;
@@ -301,12 +390,22 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
+      align-items: center;
     }
     .sidebar::-webkit-scrollbar {
       display: none;
     }
     .sidebar-title {
       display: none; 
+    }
+    /* ★スマホ時の情報ボタンの調整 */
+    .info-btn {
+      flex: 0 0 auto;
+      width: auto;
+      margin-bottom: 0;
+      margin-right: 12px;
+      padding: 8px 16px;
+      border-radius: 20px;
     }
     .channel-btn {
       flex: 0 0 auto; 
@@ -342,23 +441,51 @@
     .timestamp {
       font-size: 12px;
     }
+    .modal-content {
+      padding: 24px;
+    }
+    .modal-title {
+      font-size: 20px; 
+    }
+    .modal-text {
+      font-size: 15px; 
+    }
+    .modal-btn {
+      font-size: 16px;
+    }
   }
 </style>
 </head>
 <body>
 
+<!-- ★★★ 初期説明ポップアップ ★★★ -->
+<div id="welcome-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 class="modal-title">ーようこそ小謎展覧会バックルームへー</h2>
+    <div class="modal-text">
+      あなたはここで小謎展覧会制作メンバーのチャットログにアクセスできるようになりました。<br><br>
+      どうやら公開されないはずだった謎や出し忘れていた謎が置かれているようです。<br>
+      また、ログを見ながらどんな謎があるはずだったのかを推測する必要もあるようです。<br><br>
+      解答入力サイトに「<span class="highlight-keyword">ばっくるーむ</span>」と入力することで、隠されていた謎にも解答できるようになります。<br><br>
+      どうぞ最後までお楽しみください。
+    </div>
+    <button class="modal-btn" onclick="closeModal()">ログの閲覧を開始する</button>
+  </div>
+</div>
+<!-- ★★★ ここまで ★★★ -->
+
 <div class="discord-app">
   <!-- サイドバー -->
   <div class="sidebar">
+    <!-- ★追加：再表示ボタン -->
+    <button class="info-btn" onclick="openModal()">ℹ️ このサイトについて</button>
+    
     <div class="sidebar-title">テキストチャンネル</div>
     <button class="channel-btn" onclick="switchChannel('zatsudan', '雑談', this)">
       <span class="hashtag">#</span>雑談
     </button>
     <button class="channel-btn active" onclick="switchChannel('kaigi', '会議', this)">
       <span class="hashtag">#</span>会議
-    </button>
-    <button class="channel-btn" onclick="switchChannel('nittei', '🔒日程調整', this)">
-      <span class="hashtag" style="font-size: 14px; margin-right: 4px;">🔒</span>日程調整
     </button>
     <button class="channel-btn" onclick="switchChannel('nazo', '🔒謎実装', this)">
       <span class="hashtag" style="font-size: 14px; margin-right: 4px;">🔒</span>謎実装
@@ -388,7 +515,6 @@
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">12:25</span></div><div class="message-text">よろしく</div></div></div>
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">12:30</span></div><div class="message-text">頑張りましょう！！！！！</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">12:35</span></div><div class="message-text">日調ちゃんとやってね！</div></div></div>
-      <!-- ★追加：ひぐれへのメンション -->
       <div class="message consecutive"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username">しょこ</span></div><div class="message-text"><span class="mention">@ひぐれ</span> 日調解答お願い！</div></div></div>
       
       <!-- 8/25 -->
@@ -398,7 +524,6 @@
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">15:10</span></div><div class="message-text">たぶんなんですけど...法則謎のうち右下の謎を左下に移動すれば鏡を見なくても単語になるんじゃないですかね...👀</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">15:12</span></div><div class="message-text">たしかにそうだな</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">15:15</span></div><div class="message-text">よし、それでいこう！</div></div></div>
-      <!-- ★追加：あきあかねのツッコミ -->
       <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">15:18</span></div><div class="message-text">むずいこと言ってないかー？</div></div></div>
       
       <!-- 9/1 -->
@@ -411,14 +536,22 @@
       <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">14:25</span></div><div class="message-text">拡大謎って名前どうですか！✨</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">14:30</span></div><div class="message-text">それにしよう！</div></div></div>
 
-      <!-- ★追加：9/3 法則謎のミス -->
+      <!-- 9/3 -->
       <div class="date-divider"><span class="date-text">2026年9月3日</span></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">16:00</span></div><div class="message-text">右向きと左向きの三角がある法則謎さぁーミスってない？</div></div></div>
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">16:05</span></div><div class="message-text">どこがミスってるの？</div></div></div>
       <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">16:10</span></div><div class="message-text">もとは三角の向き全部逆じゃなかった？</div></div></div>
       <div class="message"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username name-akiakane">あきあかね</span><span class="timestamp">16:15</span></div><div class="message-text">作ったの俺だ、間違えた！</div></div></div>
       <div class="message consecutive"><div class="avatar av-akiakane">🎨</div><div class="message-content"><div class="message-header"><span class="username">あきあかね</span></div><div class="message-text">でもどっちでも解けるからよくね～</div></div></div>
-      <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">16:20</span></div><div class="message-text">どっちでも解けるのすごい！！😲</div></div></div>
+      <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">16:20</span></div><div class="message-text">自分はインクつけるのに時間かけすぎて最初と謎が変わっちゃいましたー😭お店がしまっちゃったみたいです</div></div></div>
+
+      <!-- 9/8 -->
+      <div class="date-divider"><span class="date-text">2026年9月8日</span></div>
+      <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">21:00</span></div><div class="message-text">スタッフマニュアルどうしよう！</div></div></div>
+      <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">21:05</span></div><div class="message-text">だいぶ手を回す時間がないです😭</div></div></div>
+      <div class="message"><div class="avatar av-shishito">💡</div><div class="message-content"><div class="message-header"><span class="username name-shishito">ししとう</span><span class="timestamp">21:10</span></div><div class="message-text">仕事は展覧会場内の監視、バインダーとペグシルの回収、俺たちが来たらバックルームに入れてもらうくらいでいいんじゃない？</div></div></div>
+      <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">21:15</span></div><div class="message-text">おっけー！合言葉で入れるようにしておく！</div></div></div>
+      <div class="message"><div class="avatar av-kobushi">✨</div><div class="message-content"><div class="message-header"><span class="username name-kobushi">こぶし</span><span class="timestamp">21:20</span></div><div class="message-text">合言葉！！憧れだったんですよねーそういうの✨</div></div></div>
     </div>
     
     <!-- ＝＝＝ ルーム：会議 ＝＝＝ -->
@@ -489,18 +622,6 @@
       <div class="message"><div class="avatar av-shoko">👑</div><div class="message-content"><div class="message-header"><span class="username name-shoko">しょこ</span><span class="timestamp">20:18</span></div><div class="message-text">なんかよさそう！採用！</div></div></div>
     </div>
 
-    <!-- ＝＝＝ ルーム：日程調整（アクセス拒否） ＝＝＝ -->
-    <div id="nittei" class="chat-area">
-      <div class="restricted-container">
-        <div class="lock-icon-large">🔒</div>
-        <div class="restricted-title">メッセージ履歴を閲覧できません</div>
-        <div class="restricted-desc">
-          このチャンネル（日程調整）を閲覧するためのロールまたは権限がありません。<br>
-          サーバー管理者に問い合わせるか、必要な条件を満たしてください。
-        </div>
-      </div>
-    </div>
-
     <!-- ＝＝＝ ルーム：謎実装（アクセス拒否） ＝＝＝ -->
     <div id="nazo" class="chat-area">
       <div class="restricted-container">
@@ -535,6 +656,17 @@
 </div>
 
 <script>
+  // モーダルを開く関数
+  function openModal() {
+    document.getElementById('welcome-modal').style.display = 'flex';
+  }
+
+  // モーダルを閉じる関数
+  function closeModal() {
+    document.getElementById('welcome-modal').style.display = 'none';
+  }
+
+  // タブ切り替え関数
   function switchChannel(roomId, channelName, btnElement) {
     const allAreas = document.querySelectorAll('.chat-area');
     allAreas.forEach(area => area.classList.remove('active'));
