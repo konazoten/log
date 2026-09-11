@@ -354,7 +354,7 @@
     background-color: #4752C4;
   }
 
-  /* ★追加：強調キーワードのスタイル */
+  /* ★強調キーワードのスタイル */
   .highlight-keyword {
     color: #fff;
     font-weight: bold;
@@ -365,7 +365,7 @@
     border-bottom: 2px solid #5865F2;
   }
 
-  /* スマートフォン用のレスポンシブ設定 */
+  /* ★★★ スマートフォン用のレスポンシブ設定 ★★★ */
   @media (max-width: 768px) {
     body {
       padding: 0;
@@ -398,7 +398,6 @@
     .sidebar-title {
       display: none; 
     }
-    /* ★スマホ時の情報ボタンの調整 */
     .info-btn {
       flex: 0 0 auto;
       width: auto;
@@ -444,9 +443,14 @@
     .modal-content {
       padding: 24px;
     }
+    
+    /* ★タイトルがスマホで変な改行をしないための修正 */
     .modal-title {
-      font-size: 20px; 
+      font-size: clamp(14px, 4.5vw, 18px); /* 画面幅に合わせて文字を縮小 */
+      white-space: nowrap; /* 改行を完全に禁止 */
+      margin-bottom: 16px;
     }
+    
     .modal-text {
       font-size: 15px; 
     }
@@ -477,7 +481,7 @@
 <div class="discord-app">
   <!-- サイドバー -->
   <div class="sidebar">
-    <!-- ★追加：再表示ボタン -->
+    <!-- 再表示ボタン -->
     <button class="info-btn" onclick="openModal()">ℹ️ このサイトについて</button>
     
     <div class="sidebar-title">テキストチャンネル</div>
